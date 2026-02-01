@@ -18,7 +18,8 @@ import {
     Bell,
     Ticket,
     Mail,
-    PanelLeft
+    PanelLeft,
+    FileText
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { logoutAdmin } from "@/actions/auth";
@@ -57,6 +58,7 @@ export default function AdminDashboardLayout({
         { name: "Customers", icon: Users, href: "/admin/customers" },
         { name: "Coupons", icon: Ticket, href: "/admin/coupons" },
         { name: "Newsletter", icon: Mail, href: "/admin/newsletter" },
+        { name: "Invoices", icon: FileText, href: "/admin/invoices" },
         { name: "Settings", icon: Settings, href: "/admin/settings" },
     ];
 
