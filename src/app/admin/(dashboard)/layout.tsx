@@ -19,7 +19,8 @@ import {
     Ticket,
     Mail,
     PanelLeft,
-    FileText
+    FileText,
+    BarChart
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { logoutAdmin } from "@/actions/auth";
@@ -52,6 +53,7 @@ export default function AdminDashboardLayout({
 
     const navItems = [
         { name: "Dashboard", icon: LayoutDashboard, href: "/admin" },
+        { name: "Analytics", icon: BarChart, href: "/admin/analytics" },
         { name: "Products", icon: Package, href: "/admin/products" },
         { name: "Inquiries", icon: Inbox, href: "/admin/inquiries" },
         { name: "Orders", icon: ShoppingCart, href: "/admin/orders" },
