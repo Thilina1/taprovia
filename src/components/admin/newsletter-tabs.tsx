@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { formatDate } from "@/lib/utils";
 import { Search, Filter, Trash2, Mail, Send, FilePlus, RefreshCw } from "lucide-react";
-import { deleteSubscriber, sendNewsletter } from "@/actions/marketing";
+import { deleteSubscriber, sendNewsletter, deleteNewsletter } from "@/actions/marketing";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 
@@ -20,8 +20,26 @@ export function NewsletterTabs({
     const [subscribers, setSubscribers] = useState(initialSubscribers);
     const [newsletters, setNewsletters] = useState(initialNewsletters);
 
-    // Ideally use Optimistic UI, but for now simple state synced with props is okay for initial load
-    // Server actions revalidate path so page reloads with fresh data anyway.
+    // Sync state with props when server revalidates
+    React.useEffect(() => {
+        setNewsletters(initialNewsletters);
+        setSubscribers(initialSubscribers);
+    }, [initialNewsletters, initialSubscribers]);
+
+    const handleDeleteCampaign = async (id: string) => {
+        // Optimistic update
+        const previousNewsletters = [...newsletters];
+        setNewsletters(prev => prev.filter(n => n.id !== id));
+
+        const result = await deleteNewsletter(id);
+
+        if (result.error) {
+            // Revert on failure
+            setNewsletters(previousNewsletters);
+            console.error(result.error);
+        }
+    };
+
 
     return (
         <div className="space-y-8">
@@ -77,7 +95,7 @@ export function NewsletterTabs({
                                         <h3 className="text-white font-medium text-lg mb-2 line-clamp-1" title={newsletter.subject}>{newsletter.subject}</h3>
                                         <p className="text-white/40 text-sm mb-6 line-clamp-2">{newsletter.content}</p>
 
-                                        <div className="flex items-center justify-between mt-auto">
+                                        <div className="flex items-center justify-between mt-auto pt-4 border-t border-white/5">
                                             {newsletter.status === 'sent' ? (
                                                 <span className="text-xs text-white/30 flex items-center gap-2">
                                                     <Send size={12} />
@@ -92,6 +110,14 @@ export function NewsletterTabs({
                                                     </button>
                                                 </form>
                                             )}
+
+                                            <button
+                                                onClick={() => handleDeleteCampaign(newsletter.id)}
+                                                className="p-2 text-white/20 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-colors"
+                                                title="Delete Campaign"
+                                            >
+                                                <Trash2 size={16} />
+                                            </button>
                                         </div>
                                     </div>
                                 ))
