@@ -34,7 +34,8 @@ export function InquiriesTableTabs({ initialInquiries }: { initialInquiries: any
             (inquiry.full_name?.toLowerCase() || "").includes(searchQuery.toLowerCase()) ||
             (inquiry.email?.toLowerCase() || "").includes(searchQuery.toLowerCase()) ||
             (inquiry.subject?.toLowerCase() || "").includes(searchQuery.toLowerCase()) ||
-            (inquiry.phone?.toLowerCase() || "").includes(searchQuery.toLowerCase());
+            (inquiry.phone?.toLowerCase() || "").includes(searchQuery.toLowerCase()) ||
+            (inquiry.narrative?.toLowerCase() || "").includes(searchQuery.toLowerCase());
 
         return matchesTab && matchesSearch;
     });
@@ -106,7 +107,6 @@ export function InquiriesTableTabs({ initialInquiries }: { initialInquiries: any
                                 <th className="p-6 text-[10px] font-bold uppercase tracking-widest text-white/40">Registry Email</th>
                                 <th className="p-6 text-[10px] font-bold uppercase tracking-widest text-white/40">Mobile</th>
                                 <th className="p-6 text-[10px] font-bold uppercase tracking-widest text-white/40">Classification</th>
-                                <th className="p-6 text-[10px] font-bold uppercase tracking-widest text-white/40">Narrative</th>
                                 <th className="p-6 text-[10px] font-bold uppercase tracking-widest text-white/40 text-right">Date</th>
                                 <th className="p-6 text-[10px] font-bold uppercase tracking-widest text-white/40 text-right">Actions</th>
                             </tr>
@@ -114,7 +114,7 @@ export function InquiriesTableTabs({ initialInquiries }: { initialInquiries: any
                         <tbody className="divide-y divide-white/5">
                             {filteredInquiries.length === 0 ? (
                                 <tr>
-                                    <td colSpan={8} className="p-12 text-center text-white/20 text-sm">
+                                    <td colSpan={7} className="p-12 text-center text-white/20 text-sm">
                                         No inquiries found in this category.
                                     </td>
                                 </tr>
@@ -159,9 +159,6 @@ export function InquiriesTableTabs({ initialInquiries }: { initialInquiries: any
                                             <span className="px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-white/5 text-white/60 border border-white/10">
                                                 {inquiry.classification || "General"}
                                             </span>
-                                        </td>
-                                        <td className="p-6 text-white/40 text-sm max-w-xs truncate" title={inquiry.narrative}>
-                                            {inquiry.narrative || "-"}
                                         </td>
                                         <td className="p-6 text-right text-white/20 text-xs uppercase tracking-widest font-bold">
                                             {formatDate(inquiry.created_at)}
